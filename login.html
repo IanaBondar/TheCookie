@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Registration Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+
+        body {
+            background-color: #FFEDD7;
+            font-family: 'Exo 2', sans-serif;
+            color: rgba(132, 94, 51, 1);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-repeat: repeat;
+            background-image: url("images/fonimage.png");
+            animation: animate 80s ease infinite;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: -15px;
+            margin-bottom: 10px;
+        }
+
+        form {
+            background-color: rgba(247, 230, 208, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            user-select: none;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            background-color: rgba(254, 240, 221, 1);
+            width: 100%;
+            font-family: 'Exo 2', sans-serif;
+            font-size:medium;
+            color: rgba(97, 69, 36, 1);
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: rgba(255, 186, 105, 1);
+            font-family: 'Exo 2', sans-serif;
+            font-size:large;
+            color: rgba(132, 94, 51, 1);
+            margin-top: 20px;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width:100%;
+        }
+
+        button:hover {
+            background-color: rgba(255, 186, 105, 0.7);
+            color: rgba(132, 94, 51, 0.7);
+        }
+
+        a:hover {
+            cursor: pointer;
+            color: rgba(132, 94, 51, 0.7);
+        }
+
+        #registrationForm{
+            display: block;
+        }
+
+        #loginForm{
+            display: none;
+        }
+
+        @keyframes animate {
+            0%, 100% {
+                background-position: left top;
+            }
+
+            25% {
+                background-position: right bottom;
+            }
+
+            50% {
+                background-position: left bottom;
+            }
+
+            75% {
+                background-position: right top;
+            }   
+    </style>
+</head>
+<body>
+    
+    <form id="loginForm">
+        <h2>Login</h2>
+        <label for="loginL">Логин:</label>
+        <input type="text" id="loginL" name="loginL" pattern="[A-Za-z0-9]+" required>
+        <div id="loginUsernameError" class="error-message"></div>
+
+        <label for="loginP">Пароль:</label>
+        <input type="password" id="loginP" name="loginP" required>
+        <div id="loginPasswordError" class="error-message"></div>
+
+        <div id="result"></div>
+        <button type="submit" onclick="validateLoginForm()"><b>Войти</b></button>
+        <p>У меня еще нет аккаунта. <a onclick="ToggleOn()"><b>Регистрация</b></a></p>
+    </form>
+
+    
+    <form id="registrationForm">
+        <h2>Регистрация</h2>
+        <label for="regL">Логин (только цифры или латинские буквы):</label>
+        <input type="text" id="regL" name="regL" pattern="[A-Za-z0-9]+" required>
+        <div id="registerUsernameError" class="error-message"></div>
+
+        <label for="regP">Пароль (не меньше 8 символов, с обязательным использование цифр и минимум одного из специальных символов * ! ? $ +):</label>
+        <input type="password" id="regP" name="regP" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" required>
+        <div id="registerPasswordError" class="error-message"></div>
+
+        <div id="resultR"></div>
+        <button type="submit" onclick="validateRegistrationForm()"><b>Зарегистрироваться</b></button>
+        <p>У меня есть профиль! <a onclick="ToggleOn()"><b>Вход</b></a></p>
+
+    </form>
+
+    <script>
+        function validateLoginForm() {
+            var login = document.getElementById('loginL').value;
+            var password = document.getElementById('loginP').value;
+
+            if (login == null || password == null) {
+                return false;
+            }
+            return true;
+        }
+
+        function validateRegistrationForm() {
+            var login = document.getElementById('regL').value;
+            var password = document.getElementById('regP').value;
+
+
+            // Проверка логина
+            if (!/^[A-Za-z0-9]+$/.test(login)) {
+                document.getElementById('registerUsernameError').innerHTML = 'Invalid username. Use only alphanumeric characters.';
+                return false;
+            } else {
+                document.getElementById('registerUsernameError').innerHTML = '';
+
+            }
+
+            // Проверка пароля
+            if (!/^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(password)) {
+                document.getElementById('registerPasswordError').innerHTML = 'Invalid password. Must be at least 8 characters with digits and special characters * ! ? $ +.';
+                return false;
+            } else {
+                document.getElementById('registerPasswordError').innerHTML = '';
+            }
+
+            return true;
+        }
+
+        function ToggleOn() {
+            var el1 = document.getElementById('registrationForm');
+            var el2 = document.getElementById('loginForm');
+
+            if (el1.style.display !== 'none') {
+                el1.style.display = 'none';
+                el2.style.display = 'block';
+            } else {
+                el1.style.display = 'block';
+                el2.style.display = 'none';
+            }
+        }
+
+        $(document).ready(function () {
+            $('#registrationForm').submit(function (e) {
+                e.preventDefault();
+
+                $.ajax({
+
+                    method: "POST",
+                    url: 'scripts/register.php',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        let jsonData = JSON.parse(response);
+                       
+                        if (jsonData.success == "1") {
+                            location.href = 'menu.php';
+                        }
+                        else {
+                            
+                            document.getElementById("resultR").innerText = jsonData.error;
+                        }
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $('#loginForm').submit(function (e) {
+                e.preventDefault();
+
+                $.ajax({
+
+                    method: "POST",
+                    url: 'scripts/login.php',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        let jsonData = JSON.parse(response);
+
+                        if (jsonData.success == "1") {
+                            location.href = 'menu.php';
+                        }
+                        else {
+                            
+                            document.getElementById("result").innerText = jsonData.error;
+                        }
+                    }
+                });
+            });
+        });
+
+
+        window.onerror = function (msg, url, line) {
+            alert("Message : " + msg);
+            alert("url : " + url);
+            alert("Line number : " + line);
+        }
+    </script>
+
+</body>
+</html>
